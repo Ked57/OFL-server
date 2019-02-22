@@ -2,3 +2,4 @@
 /dist/
 /.vscode/
 /prisma/generated/
+credentials

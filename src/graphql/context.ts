@@ -1,21 +1,21 @@
 import { Context } from "apollo-server-core";
 import { Request } from "express";
 
-const isPublicRequest = (body: string) => {
-  return false;
+const isPublicRequest = (query: string) => {
+  return !query.includes("mutation") && !query.includes("UserPrivateData");
 };
 
-const isRestrictedRequest = (body: string) => {
-  if (body.includes("mutation")) {
+const isRestrictedRequest = (query: string) => {
+  if (query.includes("mutation")) {
     return true;
-  } else if (body.includes("query") && body.includes("UserPrivateData")) {
+  } else if (query.includes("query") && query.includes("UserPrivateData")) {
     return true;
   } else {
     return false;
   }
 };
 
-const extractUserIdFromRequest = (body: string) => {
+const extractUserIdFromRequest = (query: string) => {
   return "cjsg1cvut00060719sozapl0h";
 };
 
@@ -30,13 +30,15 @@ const getUserFromToken = (token: string) => {
 
 const context: Context = ({ req }: { req: Request }) => {
   return new Promise((resolve, reject) => {
-    if (isPublicRequest(req.body)) {
+    if (isPublicRequest(req.body.query)) {
       resolve();
     }
     if (!req.headers.authorization) {
-      reject({ message: "Unauthorized" });
+      reject({ message: "Unauthorized: no header" });
     }
-    const user = getUserFromToken("token");
+    const bearer = req.headers.authorization as string;
+    const token = bearer.split(" ")[1] || "";
+    const user = getUserFromToken(token);
     if (isRestrictedRequest(req.body.query)) {
       if (
         user.isAdmin ||
@@ -48,7 +50,7 @@ const context: Context = ({ req }: { req: Request }) => {
           }
         });
       } else {
-        reject({ message: "Unauthorized" });
+        reject({ message: "Unauthorized: access restricted" });
       }
     } else resolve();
   });
