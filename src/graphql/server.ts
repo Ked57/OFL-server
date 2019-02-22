@@ -1,13 +1,11 @@
 import { ApolloServer, gql } from "apollo-server-express";
 import resolvers from "./resolvers/resolvers";
 import context from "./context";
+import createSchema from "./schema";
 
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
+const createServer = async () => {
+  const schema = await createSchema();
+  return new ApolloServer({ schema, resolvers, context });
+};
 
-const server = new ApolloServer({ typeDefs, resolvers, context });
-
-export default server;
+export default createServer;
