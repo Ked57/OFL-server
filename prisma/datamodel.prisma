@@ -1,5 +1,6 @@
 type Player {
   id: ID! @unique
+  api_id: number!
   name: String!
   lastName: String!
   firstName: String!
@@ -7,5 +8,18 @@ type Player {
 
 type Team {
   id: ID! @unique
+  api_id: number!
   name: String!
+}
+
+type UserPrivateData {
+  sub: String!
+  id: number!
+  battletag: String!
+  provider: String!
+  token: String!
+}
+
+type User {
+  id: number!
 }

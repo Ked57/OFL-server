@@ -3,6 +3,20 @@ import createServer from "./graphql/server";
 import BnetStrategy from "passport-bnet";
 import passport from "passport";
 
+let constants = {
+  DOMAIN: "",
+  CALLBACKURL: ""
+};
+
+if (process.env.NODE_ENV === "production") {
+  constants.DOMAIN = "";
+  constants.CALLBACKURL = "/auth/bnet/callback";
+} else {
+  constants.DOMAIN = "http://localhost";
+  constants.CALLBACKURL =
+    "https://overwatch-league-fantasy.localtunnel.me/auth/bnet/callback";
+}
+
 const BNET_ID = process.env.BNET_ID || "";
 const BNET_SECRET = process.env.BNET_SECRET || "";
 
@@ -23,7 +37,7 @@ passport.use(
     {
       clientID: BNET_ID,
       clientSecret: BNET_SECRET,
-      callbackURL: "https://localhost:3000/auth/bnet/callback",
+      callbackURL: constants.CALLBACKURL,
       region: "us"
     },
     (
@@ -35,20 +49,42 @@ passport.use(
       console.log(accessToken);
       console.log(refreshToken);
       console.log(profile);
-      console.log(done);
       return done(null, profile);
     }
   )
 );
 
-app.get("/auth/bnet", passport.authenticate("bnet"));
+app.get("/", (req, res) => {
+  res.send(
+    `<a href="https://overwatch-league-fantasy.localtunnel.me/auth/bnet/">Login with Bnet</a>`
+  );
+});
 
-app.get(
-  "/auth/bnet/callback",
-  passport.authenticate("bnet", { failureRedirect: "/" }),
-  (req, res) => {
-    console.log("auth success");
-    console.log(res);
-    res.redirect("/");
-  }
-);
+/*=========================
+   Bnet OAuth2 Navigate to
+===========================*/
+app.get("/auth/bnet", (req, res, next) => {
+  passport.authenticate("bnet", (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+  })(req, res, next);
+});
+
+/*============================
+   Bnet OAuth2 Callback Route
+==============================*/
+app.get("/auth/bnet/callback", (req, res, next) => {
+  passport.authenticate(
+    "bnet",
+    { failureRedirect: constants.DOMAIN + "/loginFailure" },
+    (err, user, info) => {
+      if (err) {
+        return next(err);
+      }
+
+      console.log(user);
+      res.redirect(constants.DOMAIN + "/loginSuccess");
+    }
+  )(req, res, next);
+});
