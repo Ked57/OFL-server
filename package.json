@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "build": "tsc",
-    "serve": "node ./dist/src/app.js",
+    "serve": "node ./dist/app.js",
     "watch": "npx nodemon --watch src -e ts --exec \"npm run build && npm run serve\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run build && npm run serve"
@@ -26,19 +26,28 @@
   },
   "homepage": "https://github.com/Ked57/OFL-server#readme",
   "dependencies": {
-    "@types/graphql": "^14.0.7",
-    "@types/node-fetch": "^2.1.6",
-    "@types/passport-bnet": "^2.0.1",
     "apollo-link-context": "^1.0.14",
     "apollo-link-http": "^1.5.11",
     "apollo-server": "^2.4.3",
     "apollo-server-express": "^2.4.3",
+    "body-parser": "^1.18.3",
     "graphql": "^14.1.1",
     "graphql-tools": "^4.0.4",
     "node-fetch": "^2.3.0",
     "passport": "^0.4.0",
     "passport-bnet": "^2.0.0",
-    "prisma": "^1.27.0",
-    "prisma-binding": "^2.3.3"
+    "prisma": "^1.30.1",
+    "prisma-binding": "^2.3.3",
+    "express-session": "^1.16.1",
+    "cookie-parser": "^1.4.4"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.1",
+    "@types/dotenv": "^6.1.1",
+    "@types/express-session": "^1.15.12",
+    "@types/graphql": "^14.0.7",
+    "@types/node-fetch": "^2.1.6",
+    "@types/passport-bnet": "^2.0.1",
+    "dotenv": "^7.0.0"
   }
 }

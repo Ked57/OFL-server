@@ -1,25 +1,22 @@
 type Player {
-  id: ID! @unique
-  api_id: number!
+  api_id: Int!
   name: String!
   lastName: String!
   firstName: String!
 }
 
 type Team {
-  id: ID! @unique
-  api_id: number!
+  api_id: Int!
   name: String!
 }
 
 type UserPrivateData {
   sub: String!
-  id: number!
-  battletag: String!
   provider: String!
   token: String!
 }
 
 type User {
-  id: number!
+  battletag: String! @unique
+  userPrivateData: UserPrivateData! @unique
 }
