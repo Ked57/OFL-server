@@ -8,10 +8,17 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import { isUserExists, registerUser, getUserById } from "./user/user";
 import { UserCreateInput } from "./prisma-client";
+// @ts-ignore
+import OverwatchLeague from "overwatchleague";
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
+
+const OWL = new OverwatchLeague();
+// OWL.findTeamName(4410).then((response: { [key: string]: any }) => {
+//   console.log(response.data);
+// });
 
 const BNET_ID = process.env.BNET_ID || "";
 const BNET_SECRET = process.env.BNET_SECRET || "";
