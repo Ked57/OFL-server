@@ -12,6 +12,30 @@ type Player {
   role: String
 }
 
+type Match {
+  api_id: Int!
+  competitors: [Team]!
+  state: String
+  status: String
+  statusReason: String
+  scores: [Int]
+  winner: Team
+  conclusionStrategy: String
+  conclusionValue: Int
+  games: [Game]
+}
+
+type Game {
+  api_id: Int!
+  number: Int!
+  points: [Int]
+  map: String
+  mapScore: [Int]
+  state: String
+  statuts: String
+  statusReason: String
+}
+
 type Team {
   api_id: Int!
   handle: String!
