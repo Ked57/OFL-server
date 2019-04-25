@@ -1,13 +1,51 @@
 type Player {
   api_id: Int!
   name: String!
-  lastName: String!
-  firstName: String!
+  handle: String
+  homeLocation: String
+  familyName: String!
+  givenName: String!
+  nationality: String!
+  photo: String
+  accounts: [Account]
+  heroes: [String]
+  role: String
 }
 
 type Team {
   api_id: Int!
+  handle: String!
   name: String!
+  homeLocation: String!
+  primaryColor: String!
+  secondaryColor: String!
+  accounts: [Account]!
+  abbreviatedName: String!
+  addressCountry: String!
+  icon: String!
+  secondaryPhoto: String!
+  owlDivision: Int!
+  players: [Player]!
+}
+
+enum AccountType {
+  TWITTER
+  FACEBOOK
+  TWITCH
+  YOUTUBE_CHANNEL
+  INSTAGRAM
+  DISCORD
+  YOUTUBE_USER
+  REDDIT_SUB
+  WEIBO
+  OTHER
+}
+
+type Account {
+  api_id: Int!
+  value: String!
+  accountType: AccountType!
+  isPublic: Boolean!
 }
 
 type UserPrivateData {
