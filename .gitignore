@@ -1,6 +1,6 @@
 /node_modules/
 /dist/
 /.vscode/
-/prisma/generated/
 credentials
 .env
+/src/prisma-client/
